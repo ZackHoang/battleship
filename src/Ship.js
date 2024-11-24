@@ -3,9 +3,9 @@ export class Ship {
         this.length = length;
         this.hitNum = 0;
         this.sunk = false;
-        this.horizontal = true;  
-        this.row = []; 
-        this.col = []; 
+        this.horizontal = true;
+        this.row = [];
+        this.col = [];
     }
 
     hit() {
@@ -14,7 +14,7 @@ export class Ship {
 
     isSunk() {
         if (this.hitNum === this.length) {
-            this.sunk = true; 
-        } 
+            this.sunk = true;
+        }
     }
 }

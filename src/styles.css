@@ -1,4 +1,37 @@
-/* styles.css */
+@font-face {
+    font-family: "Arcade";
+    src: url(font/arcadeclassic.regular.ttf);
+}
+
 body {
-    background-color: rebeccapurple;
+    font-family: Arcade;
+    letter-spacing: 0.25rem;
+    background-color: #878672;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#board_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 1.5rem; 
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    border: 1px solid black;
+}
+
+.grid {
+    border: 1px solid black;
+    height: 2.5rem; 
+    width: 2.5rem;
 }
