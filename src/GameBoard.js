@@ -15,21 +15,36 @@ export class GameBoard {
         this.allSunk = false;
     }
 
-    placeShip(length, row, col) {
+    placeShip(length, row, col, horizontal) {
         const ship = new Ship(length);
-        this.ships.push(ship);
-        if (ship.horizontal) {
+        if (horizontal === true) {
             for (let i = col; i < col + ship.length; i++) {
-                this.board[row][i] = 1;
-                ship.col.push(i);
+                if (this.board[row][i] === 1) {
+                    throw new Error("A ship is already placed here."); 
+                }
             }
+
+            for (let i = col; i < col + ship.length; i++) {
+                this.board[row][i] = 1; 
+                ship.col.push(i); 
+            }
+
             ship.row.push(row);
+            this.ships.push(ship);
         } else {
             for (let i = row; i < row + ship.length; i++) {
-                this.board[i][col] = 1;
-                ship.row.push(i);
+                if (this.board[i][col] === 1) {
+                    throw new Error("A ship is already placed here."); 
+                }
             }
+
+            for (let i = row; i < row + ship.length; i++) {
+                this.board[i][col] = 1; 
+                ship.row.push(i); 
+            }
+            
             ship.col.push(col);
+            this.ships.push(ship);
         }
     }
 

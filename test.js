@@ -31,11 +31,17 @@ describe("Initialize gameboard", () => {
         }
     });
     test("Gameboard can place a ship", () => {
-        myGameBoard.placeShip(5, 2, 3);
+        myGameBoard.placeShip(5, 2, 3, true);
         for (let i = 3; i < 8; i++) {
             expect(myGameBoard.board[2][i]).toBe(1);
         }
     });
+    test("Gameboard recognized an occupied ship space", () => {
+        expect(() => {
+            myGameBoard.placeShip(4, 2, 4, true); 
+        }).toThrow("A ship is already placed here.");
+        
+    }); 
     test("Gameboard register a successful attack", () => {
         for (let i = 3; i < 8; i++) {
             myGameBoard.receiveAttack(2, i);

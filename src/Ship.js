@@ -3,7 +3,6 @@ export class Ship {
         this.length = length;
         this.hitNum = 0;
         this.sunk = false;
-        this.horizontal = true;
         this.row = [];
         this.col = [];
     }
