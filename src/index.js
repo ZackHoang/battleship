@@ -6,7 +6,8 @@ import { renderBoard } from "./dom";
 const playerName = prompt("Welcome to Battleship! Enter your name: ", "Player 1"); 
 const playerNameDisplay = document.querySelector("#player"); 
 playerNameDisplay.textContent = playerName; 
-const player = new Player(playerName); 
-const computer = new Player("Computer");
+export const player = new Player(playerName); 
+export const computer = new Player("Computer");
+export const shipsLocation = []; 
 
 renderBoard(); 
