@@ -1,3 +1,5 @@
+import { player } from ".";
+
 const playerBoardContainer = document.querySelector("#player_board");
 const playerGrid = playerBoardContainer.getElementsByClassName("grid"); 
 let playerGridIndex = 0; 
@@ -16,13 +18,6 @@ export let shipsLengthIndex = 0;
 let horizontal = true; 
 
 export function placeShip () {
-    for (let row = 0; row < 10; row++) {
-        for (let col = 0; col < 10; col++) {
-            playerBoard[row][col].removeEventListener("mouseenter", placeShip); 
-            playerBoard[row][col].removeEventListener("mouseleave", placeShip); 
-        }
-    }
-
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 10; col++) {
             playerBoard[row][col].addEventListener("mouseenter", (e) => {
@@ -72,6 +67,32 @@ export function placeShip () {
         }
     }
 }
+
+export function confirmShip () {
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            playerBoard[row][col].addEventListener("click", (e) => {
+                if (e.target.style.backgroundColor !== "yellow") {
+                    player.board.placeShip(shipsLength[shipsLengthIndex], row, col, horizontal); 
+                    shipsLengthIndex++; 
+                    console.log(player.board); 
+                } else {
+                    alert("A ship is already placed here")
+                }
+
+                for (let row = 0; row < 10; row++) {
+                    for (let col = 0; col < 10; col++) {
+                        if (player.board.board[row][col] === 1) {
+                            playerBoard[row][col].style.backgroundColor = "yellow"; 
+                            playerBoard[row][col].removeEventListener("mouseenter", placeShip); 
+                            playerBoard[row][col].removeEventListener("mouseleave", placeShip); 
+                        }
+                    }
+                }
+            });
+        } 
+    }
+} 
 
 export function changeOrientation() {
     if (horizontal === true) {

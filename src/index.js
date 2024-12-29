@@ -1,7 +1,7 @@
 import "./styles.css";
 import "./normalize.css"; 
 import { Player } from "./Player";
-import { changeOrientation, placeShip } from "./dom";
+import { changeOrientation, confirmShip, placeShip } from "./dom";
 
 const playerName = prompt("Welcome to Battleship! Enter your name: ", "Player 1"); 
 const playerNameDisplay = document.querySelector("#player"); 
@@ -15,3 +15,4 @@ const btn = document.querySelector("button");
 btn.addEventListener("click", () => {
     changeOrientation(); 
 }); 
+confirmShip(); 
