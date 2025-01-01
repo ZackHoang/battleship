@@ -20,7 +20,8 @@ export class GameBoard {
         if (horizontal === true) {
             for (let i = col; i < col + ship.length; i++) {
                 if (this.board[row][i] === 1) {
-                    throw new Error("A ship is already placed here."); 
+                    alert("A ship is already placed here."); 
+                    return false; 
                 }
             }
 
@@ -34,7 +35,8 @@ export class GameBoard {
         } else {
             for (let i = row; i < row + ship.length; i++) {
                 if (this.board[i][col] === 1) {
-                    throw new Error("A ship is already placed here."); 
+                    alert("A ship is already placed here."); 
+                    return false; 
                 }
             }
 
@@ -46,6 +48,8 @@ export class GameBoard {
             ship.col.push(col);
             this.ships.push(ship);
         }
+
+        return true; 
     }
 
     receiveAttack(row, col) {

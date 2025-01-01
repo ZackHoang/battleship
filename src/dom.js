@@ -18,47 +18,53 @@ export let shipsLengthIndex = 0;
 let horizontal = true; 
 
 function highlightShip (event) {
-    event.target.style.backgroundColor = "green"; 
-    if (horizontal === true) {
-        for (let addCol = parseInt(event.target.dataset.col) + 1; addCol < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; addCol++) {
-            if (addCol > 9) {
+    if (horizontal) {
+        for (let col = parseInt(event.target.dataset.col); col < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; col++) {
+            if (col > 9) {
                 alert("This space is not available"); 
                 return; 
             } else {
-                playerBoard[parseInt(event.target.dataset.row)][addCol].style.backgroundColor = "green"; 
+                if (playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor !== "yellow") {
+                    playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor = "green"; 
+                }
             }
         }
     } else {
-        for (let addRow = parseInt(event.target.dataset.row) + 1; addRow < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; addRow++) {
-            if (addRow > 9) {
+        for (let row = parseInt(event.target.dataset.row); row < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; row++) {
+            if (row > 9) {
                 alert("This space is not available"); 
-                return;  
+                return; 
             } else {
-                playerBoard[addRow][parseInt(event.target.dataset.col)].style.backgroundColor = "green"; 
+                if (playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor !== "yellow") {
+                    playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor = "green"; 
+                }
             }
         }
     }
 }
 
 function stopHighlightShip (event) {
-    event.target.style.backgroundColor = "unset"; 
-    if (horizontal === true) {
-        for (let addCol = parseInt(event.target.dataset.col) + 1; addCol < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; addCol++) {
-            if (addCol > 9) {
-                return; 
-            } else {
-                playerBoard[parseInt(event.target.dataset.row)][addCol].style.backgroundColor = "unset"; 
+        if (horizontal) {
+            for (let col = parseInt(event.target.dataset.col); col < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; col++) {
+                if (col > 9) {
+                    return;  
+                } else { 
+                    if (playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor !== "yellow") {
+                        playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor = "unset"; 
+                    } 
+                }
+            }
+        } else {
+            for (let row = parseInt(event.target.dataset.row); row < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; row++) {
+                if (row > 9) {
+                    return;  
+                } else {
+                    if (playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor !== "yellow") {
+                        playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor = "unset"; 
+                    } 
+                }
             }
         }
-    } else {
-        for (let addRow = parseInt(event.target.dataset.row) + 1; addRow < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; addRow++) {
-            if (addRow > 9) {
-                return; 
-            } else {
-                playerBoard[addRow][parseInt(event.target.dataset.col)].style.backgroundColor = "unset"; 
-            }
-        }
-    }
 }
 
 export function placeShip () {
@@ -70,24 +76,32 @@ export function placeShip () {
     }
 }
 
+function setShip (event) {
+    
+    const shipPlaced = player.board.placeShip(shipsLength[shipsLengthIndex], parseInt(event.target.dataset.row), parseInt(event.target.dataset.col), horizontal); 
+
+    if (shipPlaced) {
+        shipsLengthIndex++; 
+        console.log(player.board); 
+    } else {
+        return; 
+    }
+
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            if (player.board.board[row][col] === 1) {
+                playerBoard[row][col].style.backgroundColor = "yellow";
+                playerBoard[row][col].removeEventListener("mouseenter", highlightShip); 
+                playerBoard[row][col].removeEventListener("mouseleave", stopHighlightShip);
+            }
+        }
+    }
+}
+
 export function confirmShip () {
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 10; col++) {
-            playerBoard[row][col].addEventListener("click", (e) => {
-                if (e.target.style.backgroundColor !== "yellow") {
-                    player.board.placeShip(shipsLength[shipsLengthIndex], row, col, horizontal); 
-                    shipsLengthIndex++; 
-                    console.log(player.board); 
-                } else {
-                    alert("A ship is already placed here")
-                }
-
-                if (player.board.board[row][col] === 1) {
-                    e.target.style.backgroundColor = "yellow";
-                    e.target.removeEventListener("mouseenter", highlightShip); 
-                    e.target.removeEventListener("mouseleave", stopHighlightShip);
-                }
-            });
+            playerBoard[row][col].addEventListener("click", setShip); 
         } 
     }
 } 
