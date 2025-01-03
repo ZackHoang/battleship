@@ -17,10 +17,15 @@ export class GameBoard {
 
     placeShip(length, row, col, horizontal) {
         const ship = new Ship(length);
+
         if (horizontal === true) {
+            const colLastPos = col + ship.length; 
+            if (colLastPos > 9) {
+                return "Overflowed"; 
+            }
+
             for (let i = col; i < col + ship.length; i++) {
-                if (this.board[row][i] === 1) {
-                    alert("A ship is already placed here."); 
+                if (this.board[row][i] === 1) { 
                     return false; 
                 }
             }
@@ -33,9 +38,13 @@ export class GameBoard {
             ship.row.push(row);
             this.ships.push(ship);
         } else {
+            const rowLastPos = row + ship.length; 
+            if (rowLastPos > 9) {
+                return "Overflowed"; 
+            }
+
             for (let i = row; i < row + ship.length; i++) {
-                if (this.board[i][col] === 1) {
-                    alert("A ship is already placed here."); 
+                if (this.board[i][col] === 1) { 
                     return false; 
                 }
             }
@@ -78,6 +87,18 @@ export class GameBoard {
         }
         if (this.shipsSunked === this.ships.length) {
             this.allSunk = true;
+        }
+    }
+
+    clearGameBoard() {
+        for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+                this.board[row][col] = null; 
+            }
+        }
+
+        while (this.ships.length > 0) {
+            this.ships.pop(); 
         }
     }
 }

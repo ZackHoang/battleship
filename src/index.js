@@ -9,10 +9,11 @@ playerNameDisplay.textContent = playerName;
 export const player = new Player(playerName); 
 export const computer = new Player("Computer");
 
-
 placeShip(); 
+
 const btn = document.querySelector("button"); 
 btn.addEventListener("click", () => {
     changeOrientation(); 
 }); 
+
 confirmShip(); 

@@ -1,4 +1,4 @@
-import { player } from ".";
+import { computer, player } from ".";
 
 const playerBoardContainer = document.querySelector("#player_board");
 const playerGrid = playerBoardContainer.getElementsByClassName("grid"); 
@@ -12,9 +12,9 @@ for (let row = 0; row < 10; row++) {
     }
 }
 console.log(playerBoard); 
-
-export let shipsLength = [5, 4, 3, 3, 2]; 
-export let shipsLengthIndex = 0; 
+let shipsLength = [5, 4, 3, 3, 2]; 
+let shipsLengthIndex = 0; 
+let computerShipsLengthIndex = 0; 
 let horizontal = true; 
 
 function highlightShip (event) {
@@ -76,6 +76,43 @@ export function placeShip () {
     }
 }
 
+function computerRandomize () {
+    while (true) {
+        if (computerShipsLengthIndex > 4) {
+            break; 
+        }
+
+        const randRow = Math.floor(Math.random() * 10); 
+        const randCol = Math.floor(Math.random() * 10); 
+        const randHorizontal = Math.random() < 0.5; 
+        const computerPlacedShip = computer.board.placeShip(shipsLength[computerShipsLengthIndex], randRow, randCol, randHorizontal); 
+
+        if (computerPlacedShip === false || computerPlacedShip === "Overflowed") {
+            computer.board.clearGameBoard(); 
+            computerShipsLengthIndex = 0; 
+            continue; 
+        } else {
+            computerShipsLengthIndex++; 
+        }
+    }
+
+    console.log("Finished generating computer board"); 
+    console.log(computer);
+    console.log(computer.board.board); 
+}
+
+function clearEvents() {
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            playerBoard[row][col].removeEventListener("mouseenter", highlightShip); 
+            playerBoard[row][col].removeEventListener("mouseleave", stopHighlightShip); 
+            playerBoard[row][col].removeEventListener("click", setShip);
+        }
+    }
+    console.log("Events deleted"); 
+    computerRandomize(); 
+}
+
 function setShip (event) {
     
     const shipPlaced = player.board.placeShip(shipsLength[shipsLengthIndex], parseInt(event.target.dataset.row), parseInt(event.target.dataset.col), horizontal); 
@@ -84,6 +121,7 @@ function setShip (event) {
         shipsLengthIndex++; 
         console.log(player.board); 
     } else {
+        alert("A ship is already placed here"); 
         return; 
     }
 
@@ -91,10 +129,12 @@ function setShip (event) {
         for (let col = 0; col < 10; col++) {
             if (player.board.board[row][col] === 1) {
                 playerBoard[row][col].style.backgroundColor = "yellow";
-                playerBoard[row][col].removeEventListener("mouseenter", highlightShip); 
-                playerBoard[row][col].removeEventListener("mouseleave", stopHighlightShip);
             }
         }
+    }
+
+    if (shipsLengthIndex > 4) {
+        clearEvents(); 
     }
 }
 
@@ -105,6 +145,7 @@ export function confirmShip () {
         } 
     }
 } 
+
 
 export function changeOrientation() {
     if (horizontal === true) {
