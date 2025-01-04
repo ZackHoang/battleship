@@ -12,7 +12,6 @@ export class GameBoard {
         this.ships = [];
         this.missed = 0;
         this.shipsSunked = 0;
-        this.allSunk = false;
     }
 
     placeShip(length, row, col, horizontal) {
@@ -62,6 +61,10 @@ export class GameBoard {
     }
 
     receiveAttack(row, col) {
+        if (this.board[row][col] === 0) {
+            return "This square is already hit. Please select a different square"; 
+        }
+
         if (this.board[row][col] !== null) {
             for (let i = 0; i < this.ships.length; i++) {
                 if (
@@ -70,11 +73,13 @@ export class GameBoard {
                 ) {
                     this.ships[i].hit();
                     this.board[row][col] = 0;
-                    break;
+                    return true; 
                 }
             }
         } else {
+            this.board[row][col] = 0; 
             this.missed++;
+            return false; 
         }
     }
 
@@ -86,8 +91,10 @@ export class GameBoard {
             }
         }
         if (this.shipsSunked === this.ships.length) {
-            this.allSunk = true;
+            return true; 
         }
+
+        return false; 
     }
 
     clearGameBoard() {

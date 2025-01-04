@@ -17,3 +17,4 @@ btn.addEventListener("click", () => {
 }); 
 
 confirmShip(); 
+
