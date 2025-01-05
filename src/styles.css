@@ -19,7 +19,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
-    gap: 1.5rem; 
+    gap: 1.5rem;
     text-align: center;
 }
 
@@ -32,6 +32,10 @@ body {
 
 .grid {
     border: 1px solid black;
-    height: 2.5rem; 
+    height: 2.5rem;
     width: 2.5rem;
+}
+
+button {
+    background-color: gray;
 }

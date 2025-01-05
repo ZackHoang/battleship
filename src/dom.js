@@ -1,255 +1,337 @@
 import { computer, player } from ".";
 
 const playerBoardContainer = document.querySelector("#player_board");
-const playerGrid = playerBoardContainer.getElementsByClassName("grid"); 
-const description = document.querySelector("#description"); 
-let playerGridIndex = 0; 
-const playerBoard = []; 
+const playerGrid = playerBoardContainer.getElementsByClassName("grid");
+const description = document.querySelector("#description");
+let playerGridIndex = 0;
+const playerBoard = [];
 for (let row = 0; row < 10; row++) {
-    playerBoard.push([]); 
+    playerBoard.push([]);
     for (let col = 0; col < 10; col++) {
-        playerBoard[row].push(playerGrid[playerGridIndex]); 
-        playerGridIndex++; 
+        playerBoard[row].push(playerGrid[playerGridIndex]);
+        playerGridIndex++;
     }
 }
-console.log(playerBoard); 
-const computerBoardCOntainer = document.querySelector("#computer_board"); 
-const computerGrid = computerBoardCOntainer.getElementsByClassName("grid"); 
-let computerGridIndex = 0; 
-const computerBoard = []; 
+// console.log(playerBoard);
+const computerBoardCOntainer = document.querySelector("#computer_board");
+const computerGrid = computerBoardCOntainer.getElementsByClassName("grid");
+let computerGridIndex = 0;
+const computerBoard = [];
 for (let row = 0; row < 10; row++) {
-    computerBoard.push([]); 
+    computerBoard.push([]);
     for (let col = 0; col < 10; col++) {
-        computerBoard[row].push(computerGrid[computerGridIndex]); 
-        computerGridIndex++; 
+        computerBoard[row].push(computerGrid[computerGridIndex]);
+        computerGridIndex++;
     }
 }
-console.log(computerBoard); 
-let shipsLength = [5, 4, 3, 3, 2]; 
-let shipsLengthIndex = 0; 
-let computerShipsLengthIndex = 0; 
-let horizontal = true; 
-let playerTurn = true; 
+// console.log(computerBoard);
+let shipsLength = [5, 4, 3, 3, 2];
+let shipsLengthIndex = 0;
+let computerShipsLengthIndex = 0;
+let horizontal = true;
+let playerTurn = true;
 
-function highlightShip (event) {
+function highlightShip(event) {
     if (horizontal) {
-        for (let col = parseInt(event.target.dataset.col); col < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; col++) {
+        for (
+            let col = parseInt(event.target.dataset.col);
+            col <
+            parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex];
+            col++
+        ) {
             if (col > 9) {
-                alert("This space is not available"); 
-                return; 
+                alert("This space is not available");
+                return;
             } else {
-                if (playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor !== "yellow") {
-                    playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor = "silver"; 
+                if (
+                    playerBoard[parseInt(event.target.dataset.row)][col].style
+                        .backgroundColor !== "yellow"
+                ) {
+                    playerBoard[parseInt(event.target.dataset.row)][
+                        col
+                    ].style.backgroundColor = "silver";
                 }
             }
         }
     } else {
-        for (let row = parseInt(event.target.dataset.row); row < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; row++) {
+        for (
+            let row = parseInt(event.target.dataset.row);
+            row <
+            parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex];
+            row++
+        ) {
             if (row > 9) {
-                alert("This space is not available"); 
-                return; 
+                alert("This space is not available");
+                return;
             } else {
-                if (playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor !== "yellow") {
-                    playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor = "silver"; 
+                if (
+                    playerBoard[row][parseInt(event.target.dataset.col)].style
+                        .backgroundColor !== "yellow"
+                ) {
+                    playerBoard[row][
+                        parseInt(event.target.dataset.col)
+                    ].style.backgroundColor = "silver";
                 }
             }
         }
     }
 }
 
-function stopHighlightShip (event) {
+function stopHighlightShip(event) {
     if (horizontal) {
-        for (let col = parseInt(event.target.dataset.col); col < parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex]; col++) {
+        for (
+            let col = parseInt(event.target.dataset.col);
+            col <
+            parseInt(event.target.dataset.col) + shipsLength[shipsLengthIndex];
+            col++
+        ) {
             if (col > 9) {
-                return;  
-            } else { 
-                if (playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor !== "yellow") {
-                    playerBoard[parseInt(event.target.dataset.row)][col].style.backgroundColor = "unset"; 
-                } 
+                return;
+            } else {
+                if (
+                    playerBoard[parseInt(event.target.dataset.row)][col].style
+                        .backgroundColor !== "yellow"
+                ) {
+                    playerBoard[parseInt(event.target.dataset.row)][
+                        col
+                    ].style.backgroundColor = "unset";
+                }
             }
         }
     } else {
-        for (let row = parseInt(event.target.dataset.row); row < parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex]; row++) {
+        for (
+            let row = parseInt(event.target.dataset.row);
+            row <
+            parseInt(event.target.dataset.row) + shipsLength[shipsLengthIndex];
+            row++
+        ) {
             if (row > 9) {
-                return;  
+                return;
             } else {
-                if (playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor !== "yellow") {
-                    playerBoard[row][parseInt(event.target.dataset.col)].style.backgroundColor = "unset"; 
-                } 
+                if (
+                    playerBoard[row][parseInt(event.target.dataset.col)].style
+                        .backgroundColor !== "yellow"
+                ) {
+                    playerBoard[row][
+                        parseInt(event.target.dataset.col)
+                    ].style.backgroundColor = "unset";
+                }
             }
         }
     }
 }
 
-export function placeShip () {
-    description.textContent = `Place Your Ships, ${player.name}!`; 
+export function placeShip() {
+    description.textContent = `Place Your Ships, ${player.name}!`;
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 10; col++) {
-            playerBoard[row][col].addEventListener("mouseenter", highlightShip)  
-            playerBoard[row][col].addEventListener("mouseleave", stopHighlightShip); 
+            playerBoard[row][col].addEventListener("mouseenter", highlightShip);
+            playerBoard[row][col].addEventListener(
+                "mouseleave",
+                stopHighlightShip
+            );
         }
     }
 }
 
-function computerRandomize () {
+function computerRandomize() {
     while (true) {
         if (computerShipsLengthIndex > 4) {
-            break; 
+            break;
         }
 
-        const randRow = Math.floor(Math.random() * 10); 
-        const randCol = Math.floor(Math.random() * 10); 
-        const randHorizontal = Math.random() < 0.5; 
-        const computerPlacedShip = computer.board.placeShip(shipsLength[computerShipsLengthIndex], randRow, randCol, randHorizontal); 
+        const randRow = Math.floor(Math.random() * 10);
+        const randCol = Math.floor(Math.random() * 10);
+        const randHorizontal = Math.random() < 0.5;
+        const computerPlacedShip = computer.board.placeShip(
+            shipsLength[computerShipsLengthIndex],
+            randRow,
+            randCol,
+            randHorizontal
+        );
 
-        if (computerPlacedShip === false || computerPlacedShip === "Overflowed") {
-            computer.board.clearGameBoard(); 
-            computerShipsLengthIndex = 0; 
-            continue; 
+        if (
+            computerPlacedShip === false ||
+            computerPlacedShip === "Overflowed"
+        ) {
+            computer.board.clearGameBoard();
+            computerShipsLengthIndex = 0;
+            continue;
         } else {
-            computerShipsLengthIndex++; 
+            computerShipsLengthIndex++;
         }
     }
 
-    console.log("Finished generating computer board"); 
-    console.log(computer);
-    console.log(computer.board.board); 
+    // console.log("Finished generating computer board");
+    // console.log(computer);
+    // console.log(computer.board.board);
 }
 
-function highlightSquare (event) {
-    computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].style.backgroundColor = "silver"; 
+function highlightSquare(event) {
+    computerBoard[parseInt(event.target.dataset.row)][
+        parseInt(event.target.dataset.col)
+    ].style.backgroundColor = "silver";
 }
 
-function stopHightlightSquare (event) {
-    computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].style.backgroundColor = "unset"; 
+function stopHightlightSquare(event) {
+    computerBoard[parseInt(event.target.dataset.row)][
+        parseInt(event.target.dataset.col)
+    ].style.backgroundColor = "unset";
 }
 
-function playerMove (event) {
-    const isHitComputerShip = computer.board.receiveAttack(parseInt(event.target.dataset.row), parseInt(event.target.dataset.col)); 
-    computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].removeEventListener("mouseenter", highlightSquare); 
-    computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].removeEventListener("mouseleave", stopHightlightSquare);
+function playerMove(event) {
+    computerBoard[parseInt(event.target.dataset.row)][
+        parseInt(event.target.dataset.col)
+    ].removeEventListener("mouseenter", highlightSquare);
+    computerBoard[parseInt(event.target.dataset.row)][
+        parseInt(event.target.dataset.col)
+    ].removeEventListener("mouseleave", stopHightlightSquare);
+    const isHitComputerShip = computer.board.receiveAttack(
+        parseInt(event.target.dataset.row),
+        parseInt(event.target.dataset.col)
+    );
 
     if (isHitComputerShip === true) {
-        // event.target.style.backgroundColor = "red"; 
-        computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].style.backgroundColor = "red"; 
-        playerTurn = false; 
+        computerBoard[parseInt(event.target.dataset.row)][
+            parseInt(event.target.dataset.col)
+        ].style.backgroundColor = "red";
+        playerTurn = false;
     } else if (isHitComputerShip === false) {
-        // event.target.style.backgroundColor = "green"; 
-        computerBoard[parseInt(event.target.dataset.row)][parseInt(event.target.dataset.col)].style.backgroundColor = "green"; 
-        playerTurn = false; 
+        computerBoard[parseInt(event.target.dataset.row)][
+            parseInt(event.target.dataset.col)
+        ].style.backgroundColor = "green";
+        playerTurn = false;
     } else {
-        alert(isHitComputerShip); 
+        alert(isHitComputerShip);
     }
 
-    playRound(); 
+    playRound();
 }
 
-function computerMove () {
+function computerMove() {
     while (true) {
-        const randRow = Math.floor(Math.random() * 10); 
-        const randCol = Math.floor(Math.random() * 10); 
-        const isHitPlayerShip = player.board.receiveAttack(randRow, randCol); 
+        const randRow = Math.floor(Math.random() * 10);
+        const randCol = Math.floor(Math.random() * 10);
+        const isHitPlayerShip = player.board.receiveAttack(randRow, randCol);
 
         if (isHitPlayerShip === true) {
             playerBoard[randRow][randCol].style.backgroundColor = "red";
             playerTurn = true;
-            break;    
+            break;
         } else if (isHitPlayerShip === false) {
-            playerBoard[randRow][randCol].style.backgroundColor = "green"; 
-            playerTurn = true; 
-            break; 
+            playerBoard[randRow][randCol].style.backgroundColor = "green";
+            playerTurn = true;
+            break;
         } else {
-            continue; 
+            continue;
         }
     }
 
-    playRound(); 
+    playRound();
 }
 
 function playRound() {
-    description.textContent = "Make your shot!"; 
+    description.textContent = "Make your shot!";
 
-    const isPlayerWin = player.board.isAllSunk(); 
-    const isComputerWin = computer.board.isAllSunk(); 
+    const isPlayerWin = computer.board.isAllSunk();
+    const isComputerWin = player.board.isAllSunk();
 
     if (isPlayerWin) {
-        description.textContent = "You Won! Thanks for playing :)"; 
-        return; 
+        description.textContent = "You Won! Thanks for playing :)";
+        return;
     }
 
     if (isComputerWin) {
-        description.textContent = "Computer Won! Maybe next time :("; 
-        return; 
+        description.textContent = "Computer Won! Maybe next time :(";
+        return;
     }
 
-    
     if (playerTurn) {
         for (let row = 0; row < 10; row++) {
             for (let col = 0; col < 10; col++) {
-                if (computerBoard[row][col].style.backgroundColor !== "red" || computerBoard[row][col].style.backgroundColor !== "green") {
-                    computerBoard[row][col].addEventListener("mouseenter", highlightSquare); 
-                    computerBoard[row][col].addEventListener("mouseleave", stopHightlightSquare); 
-                    computerBoard[row][col].addEventListener("click", playerMove); 
+                if (
+                    computerBoard[row][col].style.backgroundColor !== "red" &&
+                    computerBoard[row][col].style.backgroundColor !== "green"
+                ) {
+                    computerBoard[row][col].addEventListener(
+                        "mouseenter",
+                        highlightSquare
+                    );
+                    computerBoard[row][col].addEventListener(
+                        "mouseleave",
+                        stopHightlightSquare
+                    );
+                    computerBoard[row][col].addEventListener(
+                        "click",
+                        playerMove
+                    );
                 }
             }
         }
     } else {
-        computerMove(); 
+        computerMove();
     }
-        
 }
 
 export function clearEvents() {
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 10; col++) {
-            playerBoard[row][col].removeEventListener("mouseenter", highlightShip); 
-            playerBoard[row][col].removeEventListener("mouseleave", stopHighlightShip); 
+            playerBoard[row][col].removeEventListener(
+                "mouseenter",
+                highlightShip
+            );
+            playerBoard[row][col].removeEventListener(
+                "mouseleave",
+                stopHighlightShip
+            );
             playerBoard[row][col].removeEventListener("click", setShip);
         }
     }
-    console.log("Events deleted"); 
-    computerRandomize(); 
-    playRound(); 
+    // console.log("Events deleted");
+    computerRandomize();
+    playRound();
 }
 
-function setShip (event) {
-    
-    const shipPlaced = player.board.placeShip(shipsLength[shipsLengthIndex], parseInt(event.target.dataset.row), parseInt(event.target.dataset.col), horizontal); 
+function setShip(event) {
+    const shipPlaced = player.board.placeShip(
+        shipsLength[shipsLengthIndex],
+        parseInt(event.target.dataset.row),
+        parseInt(event.target.dataset.col),
+        horizontal
+    );
 
-    if (shipPlaced) {
-        shipsLengthIndex++; 
-        console.log(player.board); 
-    } else {
-        alert("A ship is already placed here"); 
-        return; 
-    }
-
-    for (let row = 0; row < 10; row++) {
-        for (let col = 0; col < 10; col++) {
-            if (player.board.board[row][col] === 1) {
-                playerBoard[row][col].style.backgroundColor = "yellow";
+    if (shipPlaced === true) {
+        shipsLengthIndex++;
+        // console.log(player.board);
+        for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+                if (player.board.board[row][col] === 1) {
+                    playerBoard[row][col].style.backgroundColor = "yellow";
+                }
             }
         }
+    } else if (shipPlaced === false) {
+        alert("A ship is already placed here");
+        return;
     }
 
     if (shipsLengthIndex > 4) {
-        clearEvents(); 
+        clearEvents();
     }
 }
 
-export function confirmShip () {
+export function confirmShip() {
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 10; col++) {
-            playerBoard[row][col].addEventListener("click", setShip); 
-        } 
+            playerBoard[row][col].addEventListener("click", setShip);
+        }
     }
-} 
+}
 
 export function changeOrientation() {
     if (horizontal === true) {
-        horizontal = false; 
+        horizontal = false;
     } else {
-        horizontal = true; 
-    }    
+        horizontal = true;
+    }
 }
- 
